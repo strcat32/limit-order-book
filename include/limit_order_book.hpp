@@ -134,17 +134,53 @@ class LimitOrderBook {
     ///
     inline const Order& get(UID order_id) { return orders.at(order_id); }
 
+    /// @brief Get the order quantity with given ID.
+    ///
+    /// @param order_id the order ID of the order to get
+    /// @returns quantity of the order with given order ID
+    ///
+    inline const Quantity get_quantity(UID order_id) {
+        auto order = &orders.at(order_id);
+        return order->quantity;
+    }
+
+    /// @brief Get the order side with given ID.
+    ///
+    /// @param order_id the order ID of the order to get
+    /// @returns side of the order with given order ID
+    ///
+    inline const Side get_side(UID order_id) {
+        auto order = &orders.at(order_id);
+        return order->side;
+    }
+
+    /// @brief Get the order side with given ID.
+    ///
+    /// @param order_id the order ID of the order to get
+    /// @returns side of the order with given order ID
+    ///
+    inline const Price get_price(UID order_id) {
+        auto order = &orders.at(order_id);
+        return order->price;
+    }
+
     /// @brief Cancel an existing order in the book.
     ///
     /// @param order_id the ID of the order to cancel
     ///
     inline void cancel(UID order_id) {
+
+        if (orders.find(order_id) == orders.end()) // safe cancel, but speed tradeoff?
+            return;
+
         auto order = &orders.at(order_id);
+
         switch (order->side) {  // remove the order from the appropriate side
             case Side::Sell: { sells.cancel(order); break; }
             case Side::Buy:  { buys.cancel(order); break; }
         }
         orders.erase(order_id);
+
     }
 
     /// @brief Reduce the quantity of the order with given ID.
@@ -174,6 +210,31 @@ class LimitOrderBook {
                 case Side::Buy:  { buys.cancel(order); break; }
             }
             orders.erase(order_id);
+        }
+    }
+
+    /// @brief Modify an existing order in the book.
+    ///
+    /// @param order_id the ID of the order to modify
+    /// @param side of the order to modify
+    /// @param quantity of the order to modify
+    /// @param price of the order to modify
+    ///
+    /// TODO: CME rules? I dont fucking know (need more research on modification rules)
+    inline void modify(UID order_id, Side side, Quantity quantity, Price price) {
+
+        if (orders.find(order_id) == orders.end()) // safe modify, but speed tradeoff?
+            return;
+
+        auto order = &orders.at(order_id);
+
+        if (order->side != side || order->price != price || quantity > order->quantity) // cancel and reinstate
+        {
+            cancel(order_id);
+            limit(side, order_id, quantity, price);
+        } else if (quantity < order->quantity)
+        {
+            reduce(order_id, order->quantity-quantity);
         }
     }
 

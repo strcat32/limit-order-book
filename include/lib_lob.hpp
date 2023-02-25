@@ -125,6 +125,36 @@ extern "C" {
         return &book->get(uid);
     }
 
+    /// @brief Get the order quantity with given ID.
+    ///
+    /// @param book a pointer to the limit order book object
+    /// @param uid the order ID of the order volume to get
+    /// @returns order quantity
+    ///
+    EXTERN const LOB::Quantity get_quantity(LOB::LimitOrderBook* book, LOB::UID uid) {
+        return book->get_quantity(uid);
+    }
+
+    /// @brief Get the order side with given ID.
+    ///
+    /// @param book a pointer to the limit order book object
+    /// @param uid the order ID of the order volume to get
+    /// @returns order side
+    ///
+    EXTERN const LOB::Side get_side(LOB::LimitOrderBook* book, LOB::UID uid) {
+        return book->get_side(uid);
+    }
+
+    /// @brief Get the order price with given ID.
+    ///
+    /// @param book a pointer to the limit order book object
+    /// @param uid the order ID of the order volume to get
+    /// @returns order price
+    ///
+    EXTERN const LOB::Price get_price(LOB::LimitOrderBook* book, LOB::UID uid) {
+        return book->get_price(uid);
+    }
+
     /// @brief Cancel an existing order in the book.
     ///
     /// @param book a pointer to the limit order book object
@@ -133,6 +163,32 @@ extern "C" {
     EXTERN void cancel(LOB::LimitOrderBook* book, LOB::UID uid) {
         book->cancel(uid);
     }
+
+    /// @brief Reduce quantity of an order with given order ID.
+    ///
+    /// @param book a pointer to the limit order book object
+    /// @param order_id the id of the order to reduce the quantity of
+    /// @param quantity the amount to remove from the order
+    ///
+    EXTERN void reduce(LOB::LimitOrderBook* book, LOB::UID uid, LOB::Quantity quantity) {
+        book->reduce(uid, quantity);
+    }
+
+    /// @brief Modify an order with given order ID.
+    ///
+    /// @param book a pointer to the limit order book object
+    /// @param order_id the id of the order to modify
+    /// @param side whether the order is a buy (true) or sell (false)
+    /// @param quantity the amount to modify the order to
+    /// @param price the price to modify the order to
+    ///
+    EXTERN void modify(
+        LOB::LimitOrderBook* book,
+        LOB::UID uid,
+        LOB::Side side,
+        LOB::Quantity quantity,
+        LOB::Price price
+    ) {book->modify(uid, side, quantity, price);}
 
     /// @brief Execute a sell market order.
     ///

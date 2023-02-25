@@ -22,6 +22,17 @@ This is an implementation of the limit order book with a price-time priority
 matching policy for reception of market data streams. There are APIs for C++,
 C, and Python.
 
+## Additions
+Some small additions to be able to modify orders
+
+- modify()
+- get_quantity(order_id)
+- get_price(order_id)
+- get_side(order_id)
+- expose reduce() to python
+
+ -- strcat32
+
 ## Usage
 
 ### C++

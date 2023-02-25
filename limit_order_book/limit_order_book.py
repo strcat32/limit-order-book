@@ -90,6 +90,45 @@ class LimitOrderBook:
     #     # pointer = Library.functions.get(self._book, order_id)
     #     raise NotImplementedError
 
+    def get_quantity(self, order_id):
+        """
+        Return quantity of the order with given ID.
+
+        Args:
+            order_id: the ID of the order to get
+
+        Returns:
+            order quantity
+
+        """
+        return Library.functions.get_quantity(self._book, order_id)
+
+    def get_side(self, order_id):
+        """
+        Return side of the order with given ID.
+
+        Args:
+            order_id: the ID of the order to get
+
+        Returns:
+            order side
+
+        """
+        return Library.functions.get_side(self._book, order_id)
+
+    def get_price(self, order_id):
+        """
+        Return side of the order with given ID.
+
+        Args:
+            order_id: the ID of the order to get
+
+        Returns:
+            order price
+
+        """
+        return Library.functions.get_price(self._book, order_id)
+
     def cancel(self, order_id):
         """
         Cancel an order with given order ID.
@@ -102,6 +141,35 @@ class LimitOrderBook:
 
         """
         Library.functions.cancel(self._book, order_id)
+
+    def reduce(self, order_id, quantity):
+        """
+        Reduce an order with given order ID.
+
+        Args:
+            order_id: the ID of the order to cancel
+            quantity: the quantity of shares the order is reduced by
+
+        Returns:
+            None
+
+        """
+        Library.functions.reduce(self._book, order_id, quantity)
+
+    def modify(self, order_id, side, quantity, price):
+        """
+        Reduce an order with given order ID.
+
+        Args:
+            order_id: the ID of the order to modify
+            side: the side of the order to modify
+            quantity: the quantity of shares the order is modified with
+            price: the price to modify the order with
+        Returns:
+            None
+
+        """
+        Library.functions.modify(self._book, order_id, side, quantity, price)
 
     def market_sell(self, order_id, quantity):
         """

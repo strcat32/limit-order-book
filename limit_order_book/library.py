@@ -60,10 +60,24 @@ def load_library():
     # setup the argument and return types for get
     library.get.argtypes = [Pointer, UID]
     library.get.restype = Pointer
+    # setup the argument and return types for get_quantity
+    library.get_quantity.argtypes = [Pointer, UID]
+    library.get_quantity.restype = Quantity
+    # setup the argument and return types for get_side
+    library.get_side.argtypes = [Pointer, UID]
+    library.get_side.restype = Side
+    # setup the argument and return types for get_price
+    library.get_price.argtypes = [Pointer, UID]
+    library.get_price.restype = Price
     # setup the argument and return types for cancel
     library.cancel.argtypes = [Pointer, UID]
     library.cancel.restype = None
-
+    # setup the argument and return types for reduce
+    library.reduce.argtypes = [Pointer, UID, Quantity]
+    library.reduce.restype = None
+    # setup the argument and return types for reduce
+    library.modify.argtypes = [Pointer, UID, Side, Quantity, Price]
+    library.modify.restype = None
     # setup the argument and return types for market_sell
     library.market_sell.argtypes = [Pointer, UID, Quantity]
     library.market_sell.restype = None

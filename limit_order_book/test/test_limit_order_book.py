@@ -342,3 +342,44 @@ class ShouldClearBuyLimitOrders(TestCase):
         self.assertEqual(0, book.count_sell())
         self.assertEqual(0, book.count_buy())
         self.assertEqual(0, book.count())
+
+
+class ShouldModifyOrders(TestCase):
+    def test(self):
+        book = limit_order_book.LimitOrderBook()
+
+        order_id = 1
+        old_price = 50
+        old_quantity = 100
+        old_side = False
+
+        new_price = 60
+        new_quantity_reduce = 90
+        new_quantity_increase = 110
+        new_side = True
+
+        book.limit_sell(order_id, old_quantity, old_price)
+
+        # price
+        self.assertEqual(old_quantity, book.volume(old_price))
+        book.modify(1, old_side, old_quantity, new_price)
+        self.assertEqual(new_price, book.get_price(order_id))
+        self.assertEqual(old_quantity, book.volume(new_price))
+
+        # side
+        book.modify(1, new_side, old_quantity, new_price)
+        self.assertEqual(new_side, book.get_side(order_id))
+        self.assertEqual(old_quantity, book.volume(new_price))
+
+        # reduce
+        book.modify(1, new_side, new_quantity_reduce, new_price)
+        self.assertEqual(new_quantity_reduce, book.volume(new_price))
+        # increase
+        book.modify(1, new_side, new_quantity_increase, new_price)
+        self.assertEqual(new_quantity_increase, book.volume(new_price))
+
+        self.assertEqual(new_price, book.best_buy())
+
+        self.assertEqual(0, book.count_sell())
+        self.assertEqual(1, book.count_buy())
+        self.assertEqual(1, book.count())
