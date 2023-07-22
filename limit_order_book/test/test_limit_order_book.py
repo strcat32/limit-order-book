@@ -1,6 +1,7 @@
 """Test cases for the lob module."""
 from unittest import TestCase
 from .. import limit_order_book
+#import limit_order_book
 
 
 class ShouldInitializeLimitOrderBook(TestCase):
@@ -383,3 +384,19 @@ class ShouldModifyOrders(TestCase):
         self.assertEqual(0, book.count_sell())
         self.assertEqual(1, book.count_buy())
         self.assertEqual(1, book.count())
+
+
+class ShouldModifyOrders2(TestCase):
+    def test(self):
+        book = limit_order_book.LimitOrderBook()
+
+        book.limit_sell(1, 1, 101)
+        book.limit_sell(2, 1, 100)
+        book.limit_buy(3, 1, 99)
+        book.limit_buy(4, 1, 98)
+
+        self.assertEqual(book.best_buy(), 99)
+        self.assertEqual(book.best_sell(), 100)
+
+        #book.modify(1, new_side, new_quantity_reduce, new_price)
+

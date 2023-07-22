@@ -168,10 +168,10 @@ class LimitOrderBook {
     ///
     /// @param order_id the ID of the order to cancel
     ///
-    inline void cancel(UID order_id) {
+    inline bool cancel(UID order_id) {
 
         if (orders.find(order_id) == orders.end()) // safe cancel, but speed tradeoff?
-            return;
+            return false;
 
         auto order = &orders.at(order_id);
 
@@ -180,6 +180,8 @@ class LimitOrderBook {
             case Side::Buy:  { buys.cancel(order); break; }
         }
         orders.erase(order_id);
+
+        return true;
 
     }
 

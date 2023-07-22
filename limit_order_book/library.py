@@ -33,6 +33,8 @@ def load_library():
     Volume = ctypes.c_uint32
     # a type for counting orders (accumulator)
     Count = ctypes.c_uint32
+    # a type for counting orders (accumulator)
+    CancelResult = ctypes.c_bool
 
     # setup the argument and return types for new_
     library.new_.argtypes = None
@@ -71,7 +73,7 @@ def load_library():
     library.get_price.restype = Price
     # setup the argument and return types for cancel
     library.cancel.argtypes = [Pointer, UID]
-    library.cancel.restype = None
+    library.cancel.restype = CancelResult
     # setup the argument and return types for reduce
     library.reduce.argtypes = [Pointer, UID, Quantity]
     library.reduce.restype = None

@@ -137,10 +137,10 @@ class LimitOrderBook:
             order_id: the ID of the order to cancel
 
         Returns:
-            None
+            bool indicating whether the order was successfully cancelled
 
         """
-        Library.functions.cancel(self._book, order_id)
+        return Library.functions.cancel(self._book, order_id)
 
     def reduce(self, order_id, quantity):
         """
