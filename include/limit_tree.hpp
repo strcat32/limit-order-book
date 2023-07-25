@@ -299,7 +299,7 @@ struct LimitTree {
     /// @param price the limit price to return the volume for
     /// @returns the volume of orders at the given limit price
     ///
-    inline Volume volume_at(Price price) const {
+    inline Volume volume_at(Price price) const {        
         if (limits.count(price)) return limits.at(price)->volume;
         return 0;
     }
@@ -310,8 +310,16 @@ struct LimitTree {
     /// @returns the number of orders at the given limit price
     ///
     inline Count count_at(Price price) const {
-        if (limits.count(price)) return limits.at(price)->count;
-        return 0;
+        //if (limits.count(price)) return limits.at(price)->count;
+        //return 0;
+        return limits.count(price);
+    }
+
+    inline LOB::Limit *limit_at(Price price) const {
+        //return limits.at(price);
+        if (limits.count(price)) return limits.at(price);
+        return nullptr;
+
     }
 };
 

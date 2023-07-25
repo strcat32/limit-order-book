@@ -222,6 +222,23 @@ class LimitOrderBook:
         """Return the best buy price in the book."""
         return Library.functions.best_buy(self._book)
 
+
+    def volume_sell_best(self):
+        """Return the volume of the best sell price in the book."""
+        return Library.functions.volume_sell_best(self._book)
+
+    def volume_buy_best(self):
+        """Return the volume of the best buy price in the book."""
+        return Library.functions.volume_buy_best(self._book)
+    
+    def count_sell_best(self):
+        """Return the count of the best sell price in the book."""
+        return Library.functions.count_sell_best(self._book)
+
+    def count_buy_best(self):
+        """Return the count of the best buy price in the book."""
+        return Library.functions.count_buy_best(self._book)
+
     def best(self, side):
         """
         Return the best price for the given side.
@@ -313,6 +330,14 @@ class LimitOrderBook:
     def count(self):
         """Return the total count of the book (number of orders)."""
         return Library.functions.count(self._book)
+
+    def get_last_top_of_book(self):
+        """Return top of book."""
+        return Library.functions.get_last_top_of_book(self._book)
+
+    def get_depth_of_book(self, step, arange):
+        """Return top of book."""
+        return Library.functions.get_depth_of_book(self._book, step, arange)
 
 
 # explicitly define the outward facing API of this module

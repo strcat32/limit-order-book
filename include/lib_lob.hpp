@@ -246,6 +246,42 @@ extern "C" {
         return book->best_buy();
     }
 
+    /// @brief Return the volume at best sell price.
+    ///
+    /// @param book a pointer to the limit order book object
+    /// @returns the volume at the best ask price in the book
+    ///
+    EXTERN LOB::Volume volume_sell_best(LOB::LimitOrderBook* book) {
+        return book->volume_sell_best();
+    }
+
+    /// @brief Return the volume at best buy price.
+    ///
+    /// @param book a pointer to the limit order book object
+    /// @returns the volume at the best bid price in the book
+    ///
+    EXTERN LOB::Volume volume_buy_best(LOB::LimitOrderBook* book) {
+        return book->volume_buy_best();
+    }
+
+    /// @brief Return the count at best sell price.
+    ///
+    /// @param book a pointer to the limit order book object
+    /// @returns the count at the best ask price in the book
+    ///
+    EXTERN LOB::Quantity count_sell_best(LOB::LimitOrderBook* book) {
+        return book->count_sell_best();
+    }
+
+    /// @brief Return the count at best buy price.
+    ///
+    /// @param book a pointer to the limit order book object
+    /// @returns the count at the best bid price in the book
+    ///
+    EXTERN LOB::Quantity count_buy_best(LOB::LimitOrderBook* book) {
+        return book->count_buy_best();
+    }
+
     /// @brief Return the best price for the given side.
     ///
     /// @param book a pointer to the limit order book object
@@ -350,6 +386,20 @@ extern "C" {
     ///
     EXTERN LOB::Count count(LOB::LimitOrderBook* book) {
         return book->count();
+    }
+
+    /// @brief Return top of book.
+    ///
+    /// @param book a pointer to the limit order book object
+    /// @returns top of book array
+    ///
+    EXTERN uint64_t *get_last_top_of_book(LOB::LimitOrderBook* book) {
+        return book->get_last_top_of_book();
+    }
+
+
+    EXTERN uint64_t *get_depth_of_book(LOB::LimitOrderBook* book, uint64_t step, uint64_t range) {
+        return book->get_depth_of_book(step, range);
     }
 }
 

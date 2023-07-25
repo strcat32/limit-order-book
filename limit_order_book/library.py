@@ -19,6 +19,7 @@ def load_library():
     except IndexError:
         raise OSError('missing static lib_limit_order_book*.so library!')
 
+
     # a type for pointers
     Pointer = ctypes.c_void_p
     # a type for the side of the order (i.e., sell or buy)
@@ -100,6 +101,20 @@ def load_library():
     library.best.argtypes = [Pointer, Side]
     library.best.restype = Price
 
+    # setup the argument and return types for volume_sell_best
+    library.volume_sell_best.argtypes = [Pointer]
+    library.volume_sell_best.restype = Volume
+    # setup the argument and return types for volume_buy_best
+    library.volume_buy_best.argtypes = [Pointer]
+    library.volume_buy_best.restype = Volume
+
+    # setup the argument and return types for count_sell_best
+    library.count_sell_best.argtypes = [Pointer]
+    library.count_sell_best.restype = Quantity
+    # setup the argument and return types for count_buy_best
+    library.count_buy_best.argtypes = [Pointer]
+    library.count_buy_best.restype = Quantity
+
     # setup the argument and return types for volume_sell_price
     library.volume_sell_price.argtypes = [Pointer, Price]
     library.volume_sell_price.restype = Volume
@@ -131,6 +146,13 @@ def load_library():
     # setup the argument and return types for count
     library.count.argtypes = [Pointer]
     library.count.restype = Count
+
+    # setup the argument and return types for get_last_top_of_book
+    library.get_last_top_of_book.argtypes = [Pointer]
+    library.get_last_top_of_book.restype = ctypes.POINTER(ctypes.c_uint64)
+
+    library.get_depth_of_book.argtypes = [Pointer, ctypes.c_uint64, ctypes.c_uint64]
+    library.get_depth_of_book.restype = ctypes.POINTER(ctypes.c_uint64)
 
     return library
 
