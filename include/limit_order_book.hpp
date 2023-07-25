@@ -455,6 +455,67 @@ class LimitOrderBook {
     }
 
 
+//    inline uint64_t *get_depth_of_book(uint64_t step, uint64_t range) {
+//        LOB::Limit* best_bid_limit = buys.best;
+//        LOB::Limit* best_ask_limit = sells.best;
+//
+//        if (best_bid_limit == nullptr || best_ask_limit == nullptr)
+//        {
+//            return nullptr;
+//        }
+//
+//        uint64_t best_bid = best_bid_limit->key;
+//        uint64_t best_ask = best_ask_limit->key;
+//        uint64_t curr_bid = best_bid;
+//        uint64_t curr_ask = best_ask;
+//
+//        uint64_t i = 0;
+//        while (curr_bid > best_bid - range)
+//        {
+//
+//            curr_bid -= step;
+//            curr_ask += step;
+//
+//            /*printf("i: %lld\n", (long long)i);
+//            printf("range: %lld\n", (long long)range);
+//            printf("best_bid: %lld\n", (long long)best_bid);
+//            printf("best_ask: %lld\n", (long long)best_ask);
+//            printf("step: %lld\n", (long long)step);
+//            printf("curr_bid: %lld\n", (long long)curr_bid);
+//            printf("curr_ask: %lld\n", (long long)curr_ask);*/
+//
+//            LOB::Limit* bid_limits = buys.limit_at(curr_bid);
+//            LOB::Limit* ask_limits = sells.limit_at(curr_ask);
+//
+//            _depth_of_book[i] = curr_bid;
+//            if (bid_limits == nullptr)
+//            {
+//                _depth_of_book[i+1] = 0;
+//                _depth_of_book[i+2] = 0;
+//            }
+//            else
+//            {
+//                _depth_of_book[i+1] = bid_limits->volume;
+//                _depth_of_book[i+2] = bid_limits->count;
+//            }
+//
+//            _depth_of_book[i+3] = curr_ask;
+//            if (ask_limits == nullptr)
+//            {
+//                _depth_of_book[i+4] = 0;
+//                _depth_of_book[i+5] = 0;
+//            }
+//            else
+//            {
+//                _depth_of_book[i+4] = ask_limits->volume;
+//                _depth_of_book[i+5] = ask_limits->count;
+//            }
+//
+//            i += 6;
+//        }
+//        return _depth_of_book;
+//    }
+
     inline uint64_t *get_depth_of_book(uint64_t step, uint64_t range) {
         LOB::Limit* best_bid_limit = buys.best;
         LOB::Limit* best_ask_limit = sells.best;
@@ -472,7 +533,7 @@ class LimitOrderBook {
         uint64_t i = 0;
         while (curr_bid > best_bid - range)
         {
-            
+
             curr_bid -= step;
             curr_ask += step;
 
@@ -487,35 +548,34 @@ class LimitOrderBook {
             LOB::Limit* bid_limits = buys.limit_at(curr_bid);
             LOB::Limit* ask_limits = sells.limit_at(curr_ask);
 
-            _depth_of_book[i] = curr_bid;
+            //_depth_of_book[i] = curr_bid;
             if (bid_limits == nullptr)
             {
+                _depth_of_book[i] = 0;
                 _depth_of_book[i+1] = 0;
-                _depth_of_book[i+2] = 0;
             }
             else
             {
-                _depth_of_book[i+1] = bid_limits->volume;
-                _depth_of_book[i+2] = bid_limits->count;
+                _depth_of_book[i] = bid_limits->volume;
+                _depth_of_book[i+1] = bid_limits->count;
             }
 
-            _depth_of_book[i+3] = curr_ask;
+            //_depth_of_book[i+3] = curr_ask;
             if (ask_limits == nullptr)
             {
-                _depth_of_book[i+4] = 0;
-                _depth_of_book[i+5] = 0;
+                _depth_of_book[i+2] = 0;
+                _depth_of_book[i+3] = 0;
             }
             else
             {
-                _depth_of_book[i+4] = ask_limits->volume;
-                _depth_of_book[i+5] = ask_limits->count;
+                _depth_of_book[i+2] = ask_limits->volume;
+                _depth_of_book[i+3] = ask_limits->count;
             }
 
-            i += 6;
+            i += 4;
         }
         return _depth_of_book;
     }
-
     /// @brief Return the volume at the given limit price.
     ///
     /// @param price the limit price to get the volume for
