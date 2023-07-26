@@ -182,13 +182,13 @@ extern "C" {
     /// @param quantity the amount to modify the order to
     /// @param price the price to modify the order to
     ///
-    EXTERN void modify(
+    EXTERN int64_t modify(
         LOB::LimitOrderBook* book,
         LOB::UID uid,
         LOB::Side side,
         LOB::Quantity quantity,
         LOB::Price price
-    ) {book->modify(uid, side, quantity, price);}
+    ) {return book->modify(uid, side, quantity, price);}
 
     /// @brief Execute a sell market order.
     ///
@@ -393,12 +393,12 @@ extern "C" {
     /// @param book a pointer to the limit order book object
     /// @returns top of book array
     ///
-    EXTERN uint64_t *get_last_top_of_book(LOB::LimitOrderBook* book) {
+    EXTERN int64_t *get_last_top_of_book(LOB::LimitOrderBook* book) {
         return book->get_last_top_of_book();
     }
 
 
-    EXTERN uint64_t *get_depth_of_book(LOB::LimitOrderBook* book, uint64_t step, uint64_t range) {
+    EXTERN int64_t *get_depth_of_book(LOB::LimitOrderBook* book, uint64_t step, uint64_t range) {
         return book->get_depth_of_book(step, range);
     }
 }

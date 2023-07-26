@@ -80,7 +80,7 @@ def load_library():
     library.reduce.restype = None
     # setup the argument and return types for reduce
     library.modify.argtypes = [Pointer, UID, Side, Quantity, Price]
-    library.modify.restype = None
+    library.modify.restype = ctypes.c_int64
     # setup the argument and return types for market_sell
     library.market_sell.argtypes = [Pointer, UID, Quantity]
     library.market_sell.restype = None

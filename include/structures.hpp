@@ -46,7 +46,7 @@ inline Side operator!(Side side) {
 /// a type for order IDs
 typedef uint64_t UID;
 /// a type for order quantities
-typedef uint32_t Quantity;
+typedef int64_t Quantity;
 /// a type for order prices
 typedef uint64_t Price;
 
@@ -87,7 +87,7 @@ struct Order : DLL::Node {
 /// a type for limit price order counts
 typedef uint32_t Count;
 /// a type for limit total volume
-typedef uint64_t Volume;
+typedef int64_t Volume;
 
 /// A price limit containing a FIFO queue of Order objects.
 struct Limit : BST::Node<Price> {
@@ -115,6 +115,9 @@ struct Limit : BST::Node<Price> {
         volume(order->quantity),
         order_head(order),
         order_tail(order) { }
+
+    //uint64_t cancel_volume = 0;
+    //int64_t modify_volume = 0;
 };
 
 }  // namespace LOB

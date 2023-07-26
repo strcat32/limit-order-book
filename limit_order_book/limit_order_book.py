@@ -169,7 +169,7 @@ class LimitOrderBook:
             None
 
         """
-        Library.functions.modify(self._book, order_id, side, quantity, price)
+        return Library.functions.modify(self._book, order_id, side, quantity, price)
 
     def market_sell(self, order_id, quantity):
         """

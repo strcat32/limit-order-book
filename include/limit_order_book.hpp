@@ -30,9 +30,9 @@
 #include <string>
 
 /// stupid hack
-static uint64_t _top_of_book[6];
+static int64_t _top_of_book[6];
 
-static uint64_t _depth_of_book[6*200];
+static int64_t _depth_of_book[4*500];
 
 /// Logic for maintaining a continuous double auction via a limit-order book.
 namespace LOB {
@@ -155,8 +155,13 @@ class LimitOrderBook {
     /// @returns side of the order with given order ID
     ///
     inline const Side get_side(UID order_id) {
-        auto order = &orders.at(order_id);
-        return order->side;
+
+        auto it = orders.find(order_id);
+        
+        if (it == orders.end())
+            return Side::Sell;
+        
+        return it->second.side;
     }
 
     /// @brief Get the order side with given ID.
@@ -165,8 +170,12 @@ class LimitOrderBook {
     /// @returns side of the order with given order ID
     ///
     inline const Price get_price(UID order_id) {
-        auto order = &orders.at(order_id);
-        return order->price;
+        auto it = orders.find(order_id);
+
+        if (it == orders.end()) 
+            return 0;
+        
+        return it->second.price;
     }
 
     /// @brief Cancel an existing order in the book.
@@ -175,10 +184,16 @@ class LimitOrderBook {
     ///
     inline bool cancel(UID order_id) {
 
-        if (orders.find(order_id) == orders.end()) // safe cancel, but speed tradeoff?
-            return false;
+//        if (orders.find(order_id) == orders.end()) // safe cancel, but speed tradeoff?
+//            return false;
+//
+//        auto order = &orders.at(order_id);
 
-        auto order = &orders.at(order_id);
+        auto it = orders.find(order_id);
+        if (it == orders.end())
+            return 0;
+
+        auto order = &it->second;
 
         switch (order->side) {  // remove the order from the appropriate side
             case Side::Sell: { sells.cancel(order); break; }
@@ -228,21 +243,35 @@ class LimitOrderBook {
     /// @param price of the order to modify
     ///
 
-    inline void modify(UID order_id, Side side, Quantity quantity, Price price) {
+    inline int64_t modify(UID order_id, Side side, Quantity quantity, Price price) {
 
-        if (orders.find(order_id) == orders.end()) // safe modify, but speed tradeoff?
-            return;
+//        if (orders.find(order_id) == orders.end()) // safe modify, but speed tradeoff?
+//            return 0;
+//
+//        auto order = &orders.at(order_id);
 
-        auto order = &orders.at(order_id);
+        auto it = orders.find(order_id);
+        if (it == orders.end())
+            return 0;
 
-        if (order->side != side || order->price != price || quantity > order->quantity) // cancel and reinstate
+        auto order = &it->second;
+
+        Price orderprice = order->price;
+
+        if (order->side != side || orderprice != price || quantity > order->quantity) // cancel and reinstate
         {
             cancel(order_id);
             limit(side, order_id, quantity, price);
+
+            return (int64_t)((int64_t)price - (int64_t)orderprice);
+
         } else if (quantity < order->quantity)
         {
             reduce(order_id, order->quantity-quantity);
+            return 0;
         }
+
+        return 0;
     }
 
     /// @brief Execute a sell market order.
@@ -409,7 +438,7 @@ class LimitOrderBook {
     ///
     /// @returns the count of buy orders at the best price
     ///
-    inline Volume count_buy_best() const {
+    inline Quantity count_buy_best() const {
         if (buys.best == nullptr) return 0;
         return buys.best->count;
     }
@@ -418,13 +447,13 @@ class LimitOrderBook {
     ///
     /// @returns the count of sell orders at the best price
     ///
-    inline Volume count_sell_best() const {
+    inline Quantity count_sell_best() const {
         if (sells.best == nullptr) return 0;
         return sells.best->count;
     }
 
 
-    inline uint64_t *get_last_top_of_book() {
+    inline int64_t *get_last_top_of_book() {
         LOB::Limit* best_bid = buys.best;
         if (best_bid == nullptr)
         {
@@ -516,7 +545,7 @@ class LimitOrderBook {
 //        return _depth_of_book;
 //    }
 
-    inline uint64_t *get_depth_of_book(uint64_t step, uint64_t range) {
+    inline int64_t *get_depth_of_book(uint64_t step, uint64_t range) {
         LOB::Limit* best_bid_limit = buys.best;
         LOB::Limit* best_ask_limit = sells.best;
 
