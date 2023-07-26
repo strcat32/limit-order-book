@@ -149,10 +149,10 @@ def load_library():
 
     # setup the argument and return types for get_last_top_of_book
     library.get_last_top_of_book.argtypes = [Pointer]
-    library.get_last_top_of_book.restype = ctypes.POINTER(ctypes.c_uint64)
+    library.get_last_top_of_book.restype = ctypes.POINTER(ctypes.c_int64)
 
     library.get_depth_of_book.argtypes = [Pointer, ctypes.c_uint64, ctypes.c_uint64]
-    library.get_depth_of_book.restype = ctypes.POINTER(ctypes.c_uint64)
+    library.get_depth_of_book.restype = ctypes.POINTER(ctypes.c_int64)
 
     return library
 
