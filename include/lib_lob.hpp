@@ -160,7 +160,7 @@ extern "C" {
     /// @param book a pointer to the limit order book object
     /// @param order_id the ID of the order to cancel
     ///
-    EXTERN bool cancel(LOB::LimitOrderBook* book, LOB::UID uid) {
+    EXTERN int cancel(LOB::LimitOrderBook* book, LOB::UID uid) {
         return book->cancel(uid);
     }
 

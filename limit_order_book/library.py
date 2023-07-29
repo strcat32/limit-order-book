@@ -34,8 +34,7 @@ def load_library():
     Volume = ctypes.c_int64
     # a type for counting orders (accumulator)
     Count = ctypes.c_uint32
-    # a type for counting orders (accumulator)
-    CancelResult = ctypes.c_bool
+    CancelResult = ctypes.c_int32
 
     # setup the argument and return types for new_
     library.new_.argtypes = None

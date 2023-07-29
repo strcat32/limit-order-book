@@ -182,7 +182,7 @@ class LimitOrderBook {
     ///
     /// @param order_id the ID of the order to cancel
     ///
-    inline bool cancel(UID order_id) {
+    inline int cancel(UID order_id) {
 
 //        if (orders.find(order_id) == orders.end()) // safe cancel, but speed tradeoff?
 //            return false;
@@ -191,9 +191,22 @@ class LimitOrderBook {
 
         auto it = orders.find(order_id);
         if (it == orders.end())
-            return 0;
+            return -1;
 
         auto order = &it->second;
+
+        // find queue position of order
+        auto limit = order->limit;
+        DLL::Node* temp = (DLL::Node* )limit->order_tail;
+        int position = 0;
+
+        if (temp == nullptr) {
+            position = -1;
+        } else
+            while (temp != order && temp != nullptr) {
+                temp = temp->prev;
+                position++;
+            }
 
         switch (order->side) {  // remove the order from the appropriate side
             case Side::Sell: { sells.cancel(order); break; }
@@ -201,7 +214,7 @@ class LimitOrderBook {
         }
         orders.erase(order_id);
 
-        return true;
+        return position;
 
     }
 
